@@ -1,0 +1,41 @@
+.light {
+  .text {
+    color: $text--light;
+  }
+  .text-2 {
+    color: $text--2--light;
+  }
+  .background {
+    background-color: $bg--light;
+  }
+  .card-bg {
+    background-color: $bg--card--light;
+  }
+  .search-box-bg {
+    background-color: $search--card--light;
+  }
+  .input-bg {
+    background-color: $bg--light;
+  }
+}
+
+.dark {
+  .text {
+    color: $text--dark;
+  }
+  .text-2 {
+    color: $text--2--dark;
+  }
+  .background {
+    background-color: $bg--dark;
+  }
+  .card-bg {
+    background-color: $bg--card--dark;
+  }
+  .search-box-bg {
+    background-color: $search--card--dark;
+  }
+  .input-bg {
+    background-color: $bg--card--dark;
+  }
+}

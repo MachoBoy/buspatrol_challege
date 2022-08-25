@@ -1,0 +1,28 @@
+{
+  "name": "buspatrol_frontend_challenge",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "~16.16.0",
+    "npm": "~8.11.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node ./bin/www",
+    "scss:build": "sass public/scss:public/styleshhets",
+    "scss:watch": "sass --no-source-map --watch public/scss:public/stylesheets",
+    "dev": "run-p scss:watch start"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "connect-livereload": "^0.6.1",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "livereload": "^0.9.3"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
