@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const cardsDOM = document.querySelector('.cards');
 const loadingDOM = document.querySelector('.loading');
 const messageDOM = document.querySelector('.message');
@@ -21,15 +23,15 @@ function setTheme(themeName) {
   const element = document.body;
   localStorage.setItem('theme', themeName);
   if (themeName === 'light') {
-    element?.classList.remove('light');
-    element?.classList.add('dark');
-    moonIcon?.classList.remove('hidden');
-    sunIcon?.classList.add('hidden');
+    element.classList.remove('light');
+    element.classList.add('dark');
+    moonIcon.classList.remove('hidden');
+    sunIcon.classList.add('hidden');
   } else {
-    element?.classList.remove('dark');
-    element?.classList.add('light');
-    moonIcon?.classList.add('hidden');
-    sunIcon?.classList.remove('hidden');
+    element.classList.remove('dark');
+    element.classList.add('light');
+    moonIcon.classList.add('hidden');
+    sunIcon.classList.remove('hidden');
   }
 }
 /**
@@ -55,12 +57,32 @@ function toggleTheme() {
 })();
 
 /**
+ * Assign class name depends on rating value
+ * @param {String} rating
+ * @returns {String}
+ */
+const getRating = rating => {
+  switch (rating) {
+    case 'G':
+      return 'rateG';
+    case 'PG':
+      return 'ratePg';
+    case 'PG-13':
+      return 'ratePg13';
+    case 'R':
+      return 'rateR';
+    default:
+      return '';
+  }
+};
+
+/**
  * Movie card template
  * @param {{name: String, rating: String, runtime: String, year: String}[]} movies
  * @returns {String}
  */
 function printMovieCard(movies) {
-  const movieCard = movies.map((movie) => {
+  const movieCard = movies.map(movie => {
     const { name, rating, runtime, year } = movie;
     return `
       <div class='card card-bg'>
@@ -105,26 +127,6 @@ async function fetchMovies() {
   loadingDOM.style.visibility = 'hidden';
 }
 
-/**
- * Assign class name depends on rating value
- * @param {String} rating
- * @returns {String}
- */
-function getRating(rating) {
-  switch (rating) {
-    case 'G':
-      return 'rateG';
-    case 'PG':
-      return 'ratePg';
-    case 'PG-13':
-      return 'ratePg13';
-    case 'R':
-      return 'rateR';
-    default:
-      break;
-  }
-}
-
 // fetch movies
 fetchMovies();
 
@@ -137,10 +139,10 @@ function populateDropdown(element, earliestYear) {
   let currentYear = new Date().getFullYear();
   // populate options until current year
   while (currentYear >= earliestYear) {
-    let dateOption = document.createElement('option');
+    const dateOption = document.createElement('option');
     dateOption.text = currentYear;
     dateOption.value = currentYear;
-    element?.add(dateOption);
+    element.add(dateOption);
     currentYear -= 1;
   }
   // Add default option as first to dropdown
@@ -181,11 +183,11 @@ const filterVals = new Set();
  * @param {string} value
  * @returns Boolean
  */
-const isValid = (value) => filterVals.size === 0 || filterVals.has(value);
+const isValid = value => filterVals.size === 0 || filterVals.has(value);
 
 // select checkboxes elements
 const checkboxes = document.querySelectorAll(
-  '.checkbox > input[type="checkbox"]'
+  '.checkbox > input[type="checkbox"]',
 );
 
 /**
@@ -204,31 +206,27 @@ const filterByRating = ({ target: { checked, value } }) => {
 function sortAscending(value) {
   Array.from(cardsDOM.querySelectorAll('.card'))
     .sort((a, b) => {
-      return a.querySelector(`.${value}`).innerText ==
-        b.querySelector(`.${value}`).innerText
-        ? 0
-        : a.querySelector(`.${value}`).innerText >
-          b.querySelector(`.${value}`).innerText
-        ? 1
-        : -1;
+      const left = a.querySelector(`.${value}`).innerText;
+      const right = b.querySelector(`.${value}`).innerText;
+      const isSameValue = left === right;
+      if (isSameValue) return false;
+      if (left > right) return 1;
+      return -1;
     })
-    .forEach((node) => {
-      return cardsDOM.appendChild(node);
-    });
+    .forEach(node => cardsDOM.appendChild(node));
 }
 
 function sortDescending(value) {
   Array.from(cardsDOM.querySelectorAll('.card'))
     .sort((a, b) => {
-      return a.querySelector(`.${value}`).innerText ==
-        b.querySelector(`.${value}`).innerText
-        ? 0
-        : a.querySelector(`.${value}`).innerText <
-          b.querySelector(`.${value}`).innerText
-        ? 1
-        : -1;
+      const left = a.querySelector(`.${value}`).innerText;
+      const right = b.querySelector(`.${value}`).innerText;
+      const isSameValue = left === right;
+      if (isSameValue) return false;
+      if (left < right) return 1;
+      return -1;
     })
-    .forEach((node) => {
+    .forEach(node => {
       return cardsDOM.appendChild(node);
     });
 }
@@ -237,19 +235,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Start all filter functions in one method, render card with conditions.
    */
-  document.addEventListener('change', (e) => {
+  document.addEventListener('change', e => {
     if (
-      e.target?.matches(
-        '.input-title, .from-selection, .to-selection, input[type="checkbox"], .runtime-range'
+      e.target.matches(
+        '.input-title, .from-selection, .to-selection, input[type="checkbox"], .runtime-range',
       )
     ) {
       // Grab all filter values
       const searchInput = searchDOM.value.toLocaleLowerCase();
       const fromYearValue = fromYearDropdown.value;
       const toYearValue = toYearDropdown.value;
-      const runtimeValue = parseInt(runtimeRangeDOM.value);
+      const runtimeValue = parseInt(runtimeRangeDOM.value, 10);
 
-      cardsDOM.querySelectorAll('.card').forEach((card) => {
+      cardsDOM.querySelectorAll('.card').forEach(card => {
         const movieName = card
           .querySelector('.name')
           .innerText.toLocaleLowerCase();
@@ -268,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
           : card.classList.add('hidden');
       });
       if (
-        Array.from(cardsDOM.querySelectorAll('.card')).every((card) =>
-          card.classList.contains('hidden')
+        Array.from(cardsDOM.querySelectorAll('.card')).every(card =>
+          card.classList.contains('hidden'),
         )
       ) {
         messageDOM.innerHTML =
@@ -288,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Change from year dropdown
    */
-  fromYearDropdown.addEventListener('change', (e) => {
+  fromYearDropdown.addEventListener('change', e => {
     // console.log('from year', e.target.value);
     filterByToYearDropdown(e.target.value);
   });
@@ -297,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * iterate checkboxes to add function
    * initialize checkbox checked
    */
-  checkboxes.forEach((checkbox) => {
+  checkboxes.forEach(checkbox => {
     checkbox.checked = false;
     checkbox.addEventListener('click', filterByRating);
   });
@@ -314,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * Click event on arrow icon
    * toggle advanced search box
    */
-  arrowDownDOM.addEventListener('click', (e) => {
+  arrowDownDOM.addEventListener('click', e => {
     advancedSearchDOM.classList.toggle('collapsed');
     arrowDownIcon.classList.toggle('collapsed');
 
@@ -329,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Add event to sort button
    */
-  sortButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
+  sortButtons.forEach(button => {
+    button.addEventListener('click', e => {
       e.preventDefault();
       if (button.children[0].classList.contains('desc')) {
         button.children[0].classList.remove('desc');
