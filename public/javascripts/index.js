@@ -201,13 +201,29 @@ const filterByRating = ({ target: { checked, value } }) => {
  * Sort Data dynamically based on button values (name, year, runtime)
  * @param {string} value
  */
-function sortData(value) {
+function sortAscending(value) {
   Array.from(cardsDOM.querySelectorAll('.card'))
     .sort((a, b) => {
       return a.querySelector(`.${value}`).innerText ==
         b.querySelector(`.${value}`).innerText
         ? 0
         : a.querySelector(`.${value}`).innerText >
+          b.querySelector(`.${value}`).innerText
+        ? 1
+        : -1;
+    })
+    .forEach((node) => {
+      return cardsDOM.appendChild(node);
+    });
+}
+
+function sortDescending(value) {
+  Array.from(cardsDOM.querySelectorAll('.card'))
+    .sort((a, b) => {
+      return a.querySelector(`.${value}`).innerText ==
+        b.querySelector(`.${value}`).innerText
+        ? 0
+        : a.querySelector(`.${value}`).innerText <
           b.querySelector(`.${value}`).innerText
         ? 1
         : -1;
@@ -315,7 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   sortButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
-      sortData(e.target.value);
+      e.preventDefault();
+      if (button.children[0].classList.contains('desc')) {
+        button.children[0].classList.remove('desc');
+        sortAscending(e.target.value);
+      } else {
+        button.children[0].classList.add('desc');
+        sortDescending(e.target.value);
+      }
     });
   });
 });

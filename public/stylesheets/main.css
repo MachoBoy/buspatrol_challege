@@ -349,9 +349,15 @@ h6 {
   font-size: 1rem;
   padding: 6px 12px;
   cursor: pointer;
+  display: flex;
 }
 .container .cards-container .sorting-container .sort .sort-arrow {
+  margin: 0 2px;
+  display: block;
   font-weight: 700;
+}
+.container .cards-container .sorting-container .sort .sort-arrow.desc {
+  -webkit-transform: rotate(180deg);
 }
 .container .cards-container .sorting-container .sort:first-child {
   border-top-left-radius: 5px;
