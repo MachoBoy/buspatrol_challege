@@ -21,23 +21,17 @@ function setTheme(themeName) {
   const element = document.body;
   localStorage.setItem('theme', themeName);
   if (themeName === 'light') {
-    element.classList.remove('light');
-    element.classList.add('dark');
-    moonIcon.classList.remove('hidden');
-    sunIcon.classList.add('hidden');
+    element?.classList.remove('light');
+    element?.classList.add('dark');
+    moonIcon?.classList.remove('hidden');
+    sunIcon?.classList.add('hidden');
   } else {
-    element.classList.remove('dark');
-    element.classList.add('light');
-    moonIcon.classList.add('hidden');
-    sunIcon.classList.remove('hidden');
+    element?.classList.remove('dark');
+    element?.classList.add('light');
+    moonIcon?.classList.add('hidden');
+    sunIcon?.classList.remove('hidden');
   }
 }
-
-/**
- * Add function to theme switch button
- */
-themeSwitcher.addEventListener('click', () => toggleTheme());
-
 /**
  * Toggle theme function to get theme
  */
@@ -69,14 +63,14 @@ function printMovieCard(movies) {
   const movieCard = movies.map((movie) => {
     const { name, rating, runtime, year } = movie;
     return `
-        <div class='card card-bg'>
-          <div class="first row">
-            <h3 class="name text">${name}</h3>
-            <h5 class="rating ${getRating(rating)}">${rating}</h5>
-          </div>
-          <div class="second text-2 row year">${year}</div>
-          <div class="third text-2 row runtime">${runtime}</div>
-        </div>`;
+      <div class='card card-bg'>
+        <div class="first row">
+          <h3 class="name text">${name}</h3>
+          <h5 class="rating ${getRating(rating)}">${rating}</h5>
+        </div>
+        <div class="second text-2 row year">${year}</div>
+        <div class="third text-2 row runtime">${runtime}</div>
+      </div>`;
   });
   return movieCard;
 }
@@ -146,7 +140,7 @@ function populateDropdown(element, earliestYear) {
     let dateOption = document.createElement('option');
     dateOption.text = currentYear;
     dateOption.value = currentYear;
-    element.add(dateOption);
+    element?.add(dateOption);
     currentYear -= 1;
   }
   // Add default option as first to dropdown
@@ -172,7 +166,6 @@ createFullYearDropdown();
  * @param {string} value
  */
 function filterByToYearDropdown(value) {
-  console.log(value);
   // remove all options in dropdown
   toYearDropdown.innerHTML = '';
   // enable dropdown
@@ -180,14 +173,6 @@ function filterByToYearDropdown(value) {
   // populate to year dropdown depends on from selection
   populateDropdown(toYearDropdown, value);
 }
-
-/**
- * Change from year dropdown
- */
-fromYearDropdown.addEventListener('change', (e) => {
-  // console.log('from year', e.target.value);
-  filterByToYearDropdown(e.target.value);
-});
 
 // intialize filter values
 const filterVals = new Set();
@@ -213,48 +198,6 @@ const filterByRating = ({ target: { checked, value } }) => {
 };
 
 /**
- * iterate checkboxes to add function
- * initialize checkbox checked
- */
-checkboxes.forEach((checkbox) => {
-  checkbox.checked = false;
-  checkbox.addEventListener('click', filterByRating);
-});
-
-/**
- * Print range value
- * @param {event} e
- */
-runtimeRangeDOM.oninput = function (e) {
-  rangeValue.innerHTML = e.target.value;
-};
-
-/**
- * Click event on arrow icon
- * toggle advanced search box
- */
-arrowDownDOM.addEventListener('click', (e) => {
-  advancedSearchDOM.classList.toggle('collapsed');
-  arrowDownIcon.classList.toggle('collapsed');
-
-  // focus on search input when its open
-  if (!advancedSearchDOM.classList.contains('collapsed')) {
-    searchDOM.focus();
-  } else {
-    searchDOM.blur();
-  }
-});
-
-/**
- * Add event to sort button
- */
-sortButtons.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    sortData(e.target.value);
-  });
-});
-
-/**
  * Sort Data dynamically based on button values (name, year, runtime)
  * @param {string} value
  */
@@ -274,48 +217,107 @@ function sortData(value) {
     });
 }
 
-/**
- * Start all filter functions in one method, render card with conditions.
- */
-document.addEventListener('change', (e) => {
-  if (
-    e.target?.matches(
-      '.input-title, .from-selection, .to-selection, input[type="checkbox"], .runtime-range'
-    )
-  ) {
-    // Grab all filter values
-    const searchInput = searchDOM.value.toLocaleLowerCase();
-    const fromYearValue = fromYearDropdown.value;
-    const toYearValue = toYearDropdown.value;
-    const runtimeValue = parseInt(runtimeRangeDOM.value);
-
-    cardsDOM.querySelectorAll('.card').forEach((card) => {
-      const movieName = card
-        .querySelector('.name')
-        .innerText.toLocaleLowerCase();
-      const movieYear = card.querySelector('.year').innerText;
-      const movieRating = card.querySelector('.rating').innerText;
-      const movieRuntime = card
-        .querySelector('.runtime')
-        .innerText.replace(' minutes', '');
-      // Add or remove class name based on filtering condition
-      (searchInput ? movieName.includes(searchInput) : true) &&
-      (fromYearValue ? movieYear >= fromYearValue : true) &&
-      (toYearValue ? movieYear <= toYearValue : true) &&
-      (filterVals.size > 0 ? isValid(movieRating) : true) &&
-      (runtimeValue ? movieRuntime >= runtimeValue : true)
-        ? card.classList.remove('hidden')
-        : card.classList.add('hidden');
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  /**
+   * Start all filter functions in one method, render card with conditions.
+   */
+  document.addEventListener('change', (e) => {
     if (
-      Array.from(cardsDOM.querySelectorAll('.card')).every((card) =>
-        card.classList.contains('hidden')
+      e.target?.matches(
+        '.input-title, .from-selection, .to-selection, input[type="checkbox"], .runtime-range'
       )
     ) {
-      messageDOM.innerHTML =
-        '<h5 class="empty-list">No movies in the list</h5>';
-    } else {
-      messageDOM.innerHTML = '';
+      // Grab all filter values
+      const searchInput = searchDOM.value.toLocaleLowerCase();
+      const fromYearValue = fromYearDropdown.value;
+      const toYearValue = toYearDropdown.value;
+      const runtimeValue = parseInt(runtimeRangeDOM.value);
+
+      cardsDOM.querySelectorAll('.card').forEach((card) => {
+        const movieName = card
+          .querySelector('.name')
+          .innerText.toLocaleLowerCase();
+        const movieYear = card.querySelector('.year').innerText;
+        const movieRating = card.querySelector('.rating').innerText;
+        const movieRuntime = card
+          .querySelector('.runtime')
+          .innerText.replace(' minutes', '');
+        // Add or remove class name based on filtering condition
+        (searchInput ? movieName.includes(searchInput) : true) &&
+        (fromYearValue ? movieYear >= fromYearValue : true) &&
+        (toYearValue ? movieYear <= toYearValue : true) &&
+        (filterVals.size > 0 ? isValid(movieRating) : true) &&
+        (runtimeValue ? movieRuntime >= runtimeValue : true)
+          ? card.classList.remove('hidden')
+          : card.classList.add('hidden');
+      });
+      if (
+        Array.from(cardsDOM.querySelectorAll('.card')).every((card) =>
+          card.classList.contains('hidden')
+        )
+      ) {
+        messageDOM.innerHTML =
+          '<h5 class="empty-list">No movies in the list</h5>';
+      } else {
+        messageDOM.innerHTML = '';
+      }
     }
-  }
+  });
+
+  /**
+   * Add function to theme switch button
+   */
+  themeSwitcher.addEventListener('click', () => toggleTheme());
+
+  /**
+   * Change from year dropdown
+   */
+  fromYearDropdown.addEventListener('change', (e) => {
+    // console.log('from year', e.target.value);
+    filterByToYearDropdown(e.target.value);
+  });
+
+  /**
+   * iterate checkboxes to add function
+   * initialize checkbox checked
+   */
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+    checkbox.addEventListener('click', filterByRating);
+  });
+
+  /**
+   * Print range value
+   * @param {event} e
+   */
+  runtimeRangeDOM.oninput = function (e) {
+    rangeValue.innerHTML = e.target.value;
+  };
+
+  /**
+   * Click event on arrow icon
+   * toggle advanced search box
+   */
+  arrowDownDOM.addEventListener('click', (e) => {
+    advancedSearchDOM.classList.toggle('collapsed');
+    arrowDownIcon.classList.toggle('collapsed');
+
+    // focus on search input when its open
+    if (!advancedSearchDOM.classList.contains('collapsed')) {
+      searchDOM.focus();
+    } else {
+      searchDOM.blur();
+    }
+  });
+
+  /**
+   * Add event to sort button
+   */
+  sortButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      sortData(e.target.value);
+    });
+  });
 });
+
+// module.exports = { fetchMovies };
