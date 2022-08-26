@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const cardsDOM = document.querySelector('.cards');
 const loadingDOM = document.querySelector('.loading');
 const messageDOM = document.querySelector('.message');
