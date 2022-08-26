@@ -16,6 +16,13 @@
 .light .input-bg {
   background-color: #fff;
 }
+.light .sort-button {
+  border: 1px solid #5c5f66;
+  background-color: #eceff1;
+}
+.light .sort-button:hover {
+  background-color: #ced4da;
+}
 
 .dark .text {
   color: #fff;
@@ -34,6 +41,13 @@
 }
 .dark .input-bg {
   background-color: #333;
+}
+.dark .sort-button {
+  border: 1px solid #2c2e33;
+  background-color: #333;
+}
+.dark .sort-button:hover {
+  background-color: #5c5f66;
 }
 
 * {
@@ -324,6 +338,28 @@ h6 {
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
+}
+.container .cards-container .sorting-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.container .cards-container .sorting-container .sort {
+  font-size: 1rem;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.container .cards-container .sorting-container .sort .sort-arrow {
+  font-weight: 700;
+}
+.container .cards-container .sorting-container .sort:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.container .cards-container .sorting-container .sort:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .container .cards-container .cards {
   margin-top: 30px;

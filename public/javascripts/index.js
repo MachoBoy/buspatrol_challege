@@ -12,6 +12,7 @@ const searchDOM = document.querySelector('.input-title');
 const themeSwitcher = document.querySelector('.theme-switcher');
 const sunIcon = document.querySelector('.bi-sun');
 const moonIcon = document.querySelector('.bi-moon');
+const sortButtons = document.querySelectorAll('.sort-button');
 
 /**
  * function to set a given theme
@@ -243,6 +244,35 @@ arrowDownDOM.addEventListener('click', (e) => {
     searchDOM.blur();
   }
 });
+
+/**
+ * Add event to sort button
+ */
+sortButtons.forEach((button) => {
+  button.addEventListener('click', (e) => {
+    sortData(e.target.value);
+  });
+});
+
+/**
+ * Sort Data dynamically based on button values (name, year, runtime)
+ * @param {string} value
+ */
+function sortData(value) {
+  Array.from(cardsDOM.querySelectorAll('.card'))
+    .sort((a, b) => {
+      return a.querySelector(`.${value}`).innerText ==
+        b.querySelector(`.${value}`).innerText
+        ? 0
+        : a.querySelector(`.${value}`).innerText >
+          b.querySelector(`.${value}`).innerText
+        ? 1
+        : -1;
+    })
+    .forEach((node) => {
+      return cardsDOM.appendChild(node);
+    });
+}
 
 /**
  * Start all filter functions in one method, render card with conditions.
