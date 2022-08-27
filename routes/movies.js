@@ -68,4 +68,4 @@ router.get('/', (_req, res, _next) => {
   res.json(movies);
 });
 
-module.exports = { movies, router };
+module.exports = router;
