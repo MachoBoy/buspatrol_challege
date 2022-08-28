@@ -25,15 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
       )
     ) {
       // Grab all filter values
-      const searchInput = searchDOM.value.toLocaleLowerCase();
+      const searchInput = searchDOM.value.toLowerCase();
       const fromYearValue = fromYearDropdown.value;
       const toYearValue = toYearDropdown.value;
       const runtimeValue = parseInt(runtimeRangeDOM.value, 10);
 
       cardsDOM.querySelectorAll('.card').forEach(card => {
-        const movieName = card
-          .querySelector('.name')
-          .innerText.toLocaleLowerCase();
+        const movieName = card.querySelector('.name').innerText.toLowerCase();
         const movieYear = card.querySelector('.year').innerText;
         const movieRating = card.querySelector('.rating').innerText;
         const movieRuntime = card
