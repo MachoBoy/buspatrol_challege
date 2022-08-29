@@ -14,3 +14,5 @@
 - Axios
 - livereload
 - npm-run-all
+- jest
+- jest-dom
