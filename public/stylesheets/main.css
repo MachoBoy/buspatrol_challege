@@ -334,6 +334,9 @@ h6 {
   width: 100%;
   max-width: 730px;
 }
+.container .cards-container .message {
+  padding: 100px 0;
+}
 .container .cards-container .message .empty-list {
   width: 100%;
   text-align: center;
