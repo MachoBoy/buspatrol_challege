@@ -345,9 +345,11 @@ document.addEventListener('change', e => {
         card.classList.contains('hidden'),
       )
     ) {
+      messageDOM.style.padding = '100px 0';
       messageDOM.innerHTML =
         '<h5 class="empty-list">No movies in the list</h5>';
     } else {
+      messageDOM.style.padding = '0';
       messageDOM.innerHTML = '';
     }
   }
