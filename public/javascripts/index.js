@@ -198,22 +198,24 @@ const filterByRating = ({ target: { checked, value } }) => {
 };
 
 /**
- *
+ * Get value of card for sorting
  * @param {HTMLElement} element
  * @param {string} value
- * @returns
+ * @returns {string | number}
  */
 function getCardValue(element, value) {
   const elementText = element.querySelector(`.${value}`).innerText;
+  // check if the sorting element is runtime
   if (elementText.includes('minutes')) {
     const runTime = Number(elementText.replace('minutes', ''));
+    // return runtime number
     return runTime;
   }
   return elementText;
 }
 
 /**
- * Sort Data dynamically based on button values (name, year, runtime)
+ * Sort Data in ascending order based on button values (name, year, runtime)
  * @param {string} value
  */
 function sortAscending(value) {
@@ -221,7 +223,6 @@ function sortAscending(value) {
     .sort((a, b) => {
       const left = getCardValue(a, value);
       const right = getCardValue(b, value);
-      console.log(left, right);
       const isSameValue = left === right;
       if (isSameValue) return false;
       if (left > right) return 1;
@@ -229,13 +230,15 @@ function sortAscending(value) {
     })
     .forEach(node => cardsDOM.appendChild(node));
 }
-
+/**
+ * Sort Data in descending order based on button values (name, year, runtime)
+ * @param {string} value
+ */
 function sortDescending(value) {
   Array.from(cardsDOM.querySelectorAll('.card'))
     .sort((a, b) => {
       const left = getCardValue(a, value);
       const right = getCardValue(b, value);
-      console.log(left, right);
       const isSameValue = left === right;
       if (isSameValue) return false;
       if (left < right) return 1;
