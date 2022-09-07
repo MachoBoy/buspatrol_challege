@@ -107,22 +107,24 @@ function createMovieCards(data) {
  * Add movie cards to the DOM
  */
 async function fetchMovies() {
-  loadingDOM.style.visibility = 'visible';
+  loadingDOM.style.display = 'flex';
   try {
     const { data } = await axios.get('/movies');
     if (data.length < 1) {
       // No Movies in the list
+      messageDOM.style.padding = '100px 0';
       messageDOM.innerHTML =
         '<h5 class="empty-list">No movies in the list</h5>';
-      loadingDOM.style.visibility = 'hidden';
+      loadingDOM.style.display = 'none';
       return;
     }
     createMovieCards(data);
   } catch (error) {
+    messageDOM.style.padding = '100px 0';
     messageDOM.innerHTML =
       '<h5 class="empty-list">There was an error, please try later.</h5>';
   }
-  loadingDOM.style.visibility = 'hidden';
+  loadingDOM.style.display = 'none';
 }
 
 // fetch movies
