@@ -13,7 +13,7 @@ const themeSwitcher = document.querySelector('.theme-switcher');
 const sunIcon = document.querySelector('.bi-sun');
 const moonIcon = document.querySelector('.bi-moon');
 const sortButtons = document.querySelectorAll('.sort-button');
-
+const resetButton = document.querySelector('.reset-button');
 /**
  * function to set a given theme
  * */
@@ -248,6 +248,32 @@ function sortDescending(value) {
 }
 
 /**
+ * Clear and initialize value in search & filter
+ */
+resetButton.addEventListener('click', () => {
+  // clear input field
+  searchDOM.value = '';
+  // reset year dropdowns
+  toYearDropdown.innerHTML = '';
+  fromYearDropdown.innerHTML = '';
+  createFullYearDropdown();
+  // reset checkbox
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  // reset Set()
+  filterVals.clear();
+  // reset range
+  runtimeRangeDOM.value = 50;
+  rangeValue.innerHTML = 50;
+  // reset no cards
+  messageDOM.style.padding = '0';
+  messageDOM.innerHTML = '';
+  // fetch movies
+  fetchMovies();
+});
+
+/**
  * Add function to theme switch button
  */
 themeSwitcher.addEventListener('click', () => toggleTheme());
@@ -284,6 +310,7 @@ runtimeRangeDOM.oninput = function (e) {
 arrowDownDOM.addEventListener('click', e => {
   advancedSearchDOM.classList.toggle('collapsed');
   arrowDownIcon.classList.toggle('collapsed');
+  resetButton.classList.toggle('collapsed');
 
   // focus on search input when its open
   if (!advancedSearchDOM.classList.contains('collapsed')) {
@@ -298,13 +325,15 @@ arrowDownDOM.addEventListener('click', e => {
  */
 sortButtons.forEach(button => {
   button.addEventListener('click', e => {
-    e.preventDefault();
-    if (button.children[0].classList.contains('desc')) {
-      button.children[0].classList.remove('desc');
-      sortAscending(e.target.value);
-    } else {
-      button.children[0].classList.add('desc');
-      sortDescending(e.target.value);
+    const buttonChildren = button.children[0];
+    if (buttonChildren) {
+      if (buttonChildren.classList.contains('desc')) {
+        buttonChildren.classList.remove('desc');
+        sortAscending(e.target.value);
+      } else {
+        buttonChildren.classList.add('desc');
+        sortDescending(e.target.value);
+      }
     }
   });
 });

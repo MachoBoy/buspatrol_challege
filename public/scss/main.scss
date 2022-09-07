@@ -65,14 +65,36 @@
     }
     &.collapsed {
       max-height: 65px;
+      // max-height: 500px;
+
       @include xs {
         max-height: 55px;
       }
     }
-    .advanced-search-title {
-      font-size: 1.5rem;
-      @include xs {
-        font-size: 1.2rem;
+    .search-box-heading {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .advanced-search-title {
+        font-size: 1.5rem;
+        @include xs {
+          font-size: 1.2rem;
+        }
+      }
+      .reset-button {
+        cursor: pointer;
+        width: 100px;
+        height: 40px;
+        border-radius: 4px;
+        box-shadow: 0px 3px 8px rgb(0 0 0 / 10%);
+        font-weight: 600;
+        font-size: 0.875rem;
+        border: none;
+        transition: transform 0.5s ease;
+        transform: translateY(-200%);
+        &.collapsed {
+          transform: translateY(0);
+        }
       }
     }
     .title-wrapper {

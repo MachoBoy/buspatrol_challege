@@ -161,13 +161,33 @@ h6 {
     max-height: 55px;
   }
 }
-.container .advanced-search .advanced-search-title {
+.container .advanced-search .search-box-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.container .advanced-search .search-box-heading .advanced-search-title {
   font-size: 1.5rem;
 }
 @media (max-width: 375px) {
-  .container .advanced-search .advanced-search-title {
+  .container .advanced-search .search-box-heading .advanced-search-title {
     font-size: 1.2rem;
   }
+}
+.container .advanced-search .search-box-heading .reset-button {
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  transition: transform 0.5s ease;
+  transform: translateY(-200%);
+}
+.container .advanced-search .search-box-heading .reset-button.collapsed {
+  transform: translateY(0);
 }
 .container .advanced-search .title-wrapper {
   margin-top: 20px;
